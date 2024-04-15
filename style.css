@@ -1,5 +1,6 @@
 :root {
   --primary-dark: #50614a;
+  --transparent-green: #50614a9c;
   --primary-light: #c4e641;
   --neutral: #e6e9d8;
   --hover: #668000;
@@ -115,9 +116,48 @@ a button {
   padding-top: 25px;
   padding-bottom: 30px;
 }
+dialog {
+  border-radius: var(--radius-medium);
+  border: 0px;
+  width: 60%;
+  padding: 20px;
+  position: absolute;
+  left: 20%;
+  top: 25%;
+  height: 65%;
+}
+
+.dialog-buttons {
+  align-self: end;
+  display: flex;
+  margin-top: 15px;
+}
+
+dialog::backdrop {
+  background: var(--transparent-green);
+}
+
+dialog form {
+  margin-left: 2.5%;
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+
+dialog form textarea {
+  width: 100%;
+  border-radius: var(--radius-small);
+  outline: none;
+  border: 1px solid grey;
+  resize: none;
+}
+
+.close-button {
+  align-self: flex-end;
+}
+
 .grid {
   display: grid;
-
   grid-template-columns: repeat(12, 1fr);
   column-gap: 24px;
   padding: 64px;
@@ -382,6 +422,11 @@ a button {
     padding-top: 100px;
   }
 
+  .hotel-section {
+    height: auto;
+    padding-top: 100px;
+  }
+
   .hero-details {
     grid-column: 1/9;
   }
@@ -407,6 +452,19 @@ a button {
     grid-column: 1/9;
   }
 
+  .hotel-title {
+    grid-column: 1/9;
+  }
+
+  .hotel-details {
+    grid-column: 1/9;
+    height: auto;
+  }
+
+  .image > .hotel-main-image {
+    grid-column: 1/9;
+  }
+
   .footer {
     display: flex;
     flex-direction: column-reverse;
@@ -427,6 +485,11 @@ a button {
 @media screen and (max-width: 456px) {
   .hidden {
     display: inline;
+  }
+  dialog {
+    width: 90%;
+    left: 5%;
+    top: 10%;
   }
 
   .nav-links {
@@ -449,6 +512,11 @@ a button {
     padding-top: 100px;
   }
 
+  .hotel-section {
+    height: auto;
+    padding-top: 100px;
+  }
+
   .hero-details {
     grid-column: 1/5;
   }
@@ -466,6 +534,15 @@ a button {
     grid-column: 1/5;
   }
 
+  .hotel-title {
+    grid-column: 1/5;
+  }
+
+  .hotel-details {
+    grid-column: 1/5;
+    grid-row: auto;
+  }
+
   .footer > .card-image {
     background-position: 0px -225px;
   }
@@ -473,5 +550,9 @@ a button {
   .hero-cards {
     flex-direction: column;
     row-gap: 12px;
+  }
+
+  .hotel-main-image {
+    grid-column: 1/5;
   }
 }

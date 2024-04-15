@@ -53,7 +53,25 @@
           felis a venenatis. Suspendisse accumsan aliquam lorem, sit amet
           ultricies justo tristique nec.
         </p>
-        <p class="gap"><button class="button primary">Contact ✉</button></p>
+        <p class="gap">
+          <button class="button primary" id="showDialogButton">
+            Contact ✉
+          </button>
+        </p>
+        <dialog>
+          <form method="dialog">
+            <div class="close-button">
+              <button class="button" id="closeDialogButton">✕</button>
+            </div>
+            <p class="title-large">Contact</p>
+            <p class="gap">You're contacting the [hotel name] hotel</p>
+            <textarea name="textarea" id="textarea" rows="8"></textarea>
+            <div class="dialog-buttons">
+              <button class="button" id="closeDialogButton">Cancel</button>
+              <button class="button primary">Send ✉</button>
+            </div>
+          </form>
+        </dialog>
         <div class="hero-cards">
           <div class="image hotel-image"></div>
           <div class="image hotel-image"></div>
@@ -62,3 +80,12 @@
     </section>
   </body>
 </html>
+
+<script>
+  const dialog = document.querySelector("dialog");
+  const openDialog = document.getElementById("showDialogButton");
+  const closeDialog = document.getElementById("closeDialogButton");
+
+  openDialog.addEventListener("click", () => dialog.showModal());
+  closeDialog.addEventListener("click", () => dialog.close());
+</script>
