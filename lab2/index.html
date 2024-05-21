@@ -3,23 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
     <link rel="stylesheet" href="style.css" />
-    <title>To Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italiana&family=Roboto+Flex:opsz,wght@8..144,300&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
       <div class="to-do">
-        <h2>To Do List</h2>
+        <h2>To-Do List</h2>
         <div class="row">
-          <input placeholder="Add your task" id="input-box" />
-          <button onclick="addTask()">Add</button>
+          <input type="text" id="input-box" placeholder="Add a new task..." />
+          <button onclick="addTask()">ADD</button>
         </div>
-
         <ul id="unordered-list"></ul>
       </div>
     </div>
 
-    <script src="./script.js"></script>
+    <dialog id="delete-dialog">
+      <p id="delete-text">Are you sure you want to delete this task?</p>
+      <p id="task-content"></p>
+      <button id="confirm-delete">YES</button>
+      <button id="cancel-delete">NO</button>
+    </dialog>
+
+    <script src="script.js"></script>
   </body>
 </html>
-
