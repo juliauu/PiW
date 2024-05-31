@@ -1,22 +1,19 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-
-import MainPage from "./components/MainPage";
-import HotelPage from "./components/HotelPage";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./pages/Navbar";
+import MainPage from "./pages/MainPage";
+import HotelPage from "./pages/HotelPage";
 import "./App.css";
 
 const App = () => {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Switch>
-          <Route exact path="/" component={MainPage} />
-          <Route path="/hotel/:id" component={HotelPage} />
-        </Switch>
-      </div>
-    </Router>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/hotel/:id" element={<HotelPage />} />
+      </Routes>
+    </>
   );
 };
 
