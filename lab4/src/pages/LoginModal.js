@@ -46,6 +46,7 @@ const LoginModal = ({ isOpen, setIsOpen }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
+            required
           />
         </div>
         <div>
@@ -54,6 +55,7 @@ const LoginModal = ({ isOpen, setIsOpen }) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
+            required
           />
         </div>
 

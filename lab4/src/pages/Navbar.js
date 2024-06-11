@@ -38,17 +38,20 @@ const Navbar = () => {
           </>
         ) : (
           <>
+            <li>
+              <NavLink
+                to="/"
+                className="nav-link"
+                onClick={() => setIsSignupModalOpen(true)}
+              >
+                Sign up
+              </NavLink>
+            </li>
             <button
               className="button primary"
               onClick={() => setIsLoginModalOpen(true)}
             >
               Log in
-            </button>
-            <button
-              className="button primary"
-              onClick={() => setIsSignupModalOpen(true)}
-            >
-              Sign up
             </button>
           </>
         )}
