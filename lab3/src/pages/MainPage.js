@@ -3,7 +3,7 @@ import hotels from "../data/hotels";
 import arrow from "../Assets/Arrow.svg";
 import { Link } from "react-router-dom";
 
-const BrowseSection = () => {
+const MainPage = () => {
   return (
     <>
       <section id="hero" className="grid hero-section">
@@ -73,4 +73,4 @@ const BrowseSection = () => {
   );
 };
 
-export default BrowseSection;
+export default MainPage;
