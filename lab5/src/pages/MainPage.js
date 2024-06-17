@@ -1,30 +1,9 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../data/firebaseConfig";
 import arrow from "../Assets/Arrow.svg";
-import { Link } from "react-router-dom";
+import BrowsePage from "./BrowsePage";
+import RentPage from "./RentPage";
 
 const MainPage = () => {
-  const [hotels, setHotels] = useState([]);
-
-  useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "hotels"));
-        const hotelsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setHotels(hotelsData);
-      } catch (error) {
-        console.error("Error fetching hotels: ", error);
-      }
-    };
-
-    fetchHotels();
-  }, []);
-
   return (
     <>
       <section id="hero" className="grid hero-section">
@@ -50,46 +29,9 @@ const MainPage = () => {
         </article>
         <div className="image hero-image-container"></div>
       </section>
-      <section id="browse" className="browse-section">
-        <p className="title-middle">Explore the hotels</p>
-        <input
-          className="searchbar"
-          placeholder="Search by hotel name, place etc."
-        />
-        <section className="grid hotel-cards">
-          {hotels.map((hotel) => (
-            <article key={hotel.id} className="hotel-card">
-              <div className="image card-image">
-                <p className="chip">{hotel.location}</p>
-              </div>
-              <p className="text-middle">{hotel.name}</p>
-              <p className="text-small">{hotel.description}</p>
-              <div className="hotel-card-footer">
-                <p className="text-middle">{"★".repeat(hotel.rating)}</p>
-                <p className="text-middle">{hotel.price}</p>
-              </div>
-              <Link to={`/hotel/${hotel.id}`} className="nav-link">
-                <button className="button primary">
-                  View Offer <img src={arrow} alt="Arrow" />
-                </button>
-              </Link>
-            </article>
-          ))}
-        </section>
-      </section>
-      <section id="rent" className="footer grid">
-        <div className="image card-image"></div>
-        <article className="footer-details">
-          <p className="title-large">Rent with us!</p>
-          <p className="text-middle">
-            If you’re a hotel or an apartment owner who’s looking to reach more
-            customers you can now rent your property with TranquilTravels.
-          </p>
-          <button className="button secondary">
-            Learn more <img src={arrow} alt="Arrow" />
-          </button>
-        </article>
-      </section>
+
+      <BrowsePage />
+      <RentPage />
     </>
   );
 };

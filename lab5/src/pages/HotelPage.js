@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../data/firebaseConfig";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FavoritesContext } from "../contexts/favoritesContext";
+import { getHotelMainImage } from "../utils/getHotelMainImage";
 
 const HotelPage = () => {
   const { id } = useParams();
   const [hotel, setHotel] = useState(null);
   const [message, setMessage] = useState("");
+  const { state, dispatch } = useContext(FavoritesContext);
 
   useEffect(() => {
     const fetchHotel = async () => {
       const docRef = doc(db, "hotels", id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setHotel(docSnap.data());
+        setHotel({ ...docSnap.data(), id });
       } else {
         console.log("No such document!");
       }
@@ -23,13 +26,14 @@ const HotelPage = () => {
     fetchHotel();
   }, [id]);
 
-  if (!hotel) {
-    return <p>Hotel not found</p>;
-  }
+  const isFavorite = state.favorites.some((favHotel) => favHotel.id === id);
 
-  const getHotelMainImage = (hotelId) => {
-    const imagePath = require(`../Assets/cards${hotelId}.jpg`);
-    return imagePath;
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      dispatch({ type: "REMOVE_FAVORITE", payload: { ...hotel, id } });
+    } else {
+      dispatch({ type: "ADD_FAVORITE", payload: { ...hotel, id } });
+    }
   };
 
   const openDialog = () => {
@@ -60,6 +64,10 @@ const HotelPage = () => {
     closeDialog();
   };
 
+  if (!hotel) {
+    return <p>Hotel not found</p>;
+  }
+
   return (
     <section id="hero" className="grid hotel-section">
       <p className="title-large hotel-title gap">{hotel.name}</p>
@@ -67,7 +75,9 @@ const HotelPage = () => {
         className="image hotel-main-image"
         style={{ backgroundImage: `url(${getHotelMainImage(id)})` }}
       >
-        <p className="chip">Add to favorites ♡</p>
+        <p className="chip" onClick={handleFavoriteClick}>
+          {isFavorite ? "Remove from favorites ♥" : "Add to favorites ♡"}
+        </p>
       </div>
       <article className="hotel-details">
         <p className="text-small">
@@ -102,6 +112,7 @@ const HotelPage = () => {
               rows="8"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              className="textarea-padding"
             ></textarea>
             <div className="dialog-buttons">
               <button

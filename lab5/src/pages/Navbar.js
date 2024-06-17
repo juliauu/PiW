@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import logo from "../Assets/logo.svg";
 import { NavLink } from "react-router-dom";
 import { logout, useUser } from "../data/userService";
-import LoginModal from "./LoginModal";
-import SignupModal from "./SignupModal";
+import LoginModal from "../data/LoginModal";
+import SignupModal from "../data/SignupModal";
 
 const Navbar = () => {
   const user = useUser();
@@ -12,7 +12,9 @@ const Navbar = () => {
 
   return (
     <nav className="fixed-navigation">
-      <img className="logo" src={logo} alt="Logo" />
+      <NavLink to="/" className="nav-link">
+        <img className="logo" src={logo} alt="Logo" />
+      </NavLink>
       <ul className="nav-links">
         <li>
           <NavLink to="/" className="nav-link">
@@ -20,12 +22,17 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/#browse" className="nav-link">
+          <NavLink to="/favorites" className="nav-link">
+            Favorites
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/browse" className="nav-link">
             Browse
           </NavLink>
         </li>
         <li>
-          <a href="#rent" className="nav-link">
+          <a href="rent" className="nav-link">
             Rent with us
           </a>
         </li>
