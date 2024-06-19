@@ -2,8 +2,21 @@ import React from "react";
 import hotels from "../data/hotels";
 import arrow from "../Assets/Arrow.svg";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const MainPage = () => {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const filteredHotels = hotels.filter((hotel) => {
+    const searchString =
+      `${hotel.name} ${hotel.location} ${hotel.description}`.toLowerCase();
+    return searchString.includes(query.toLowerCase());
+  });
+
   return (
     <>
       <section id="hero" className="grid hero-section">
@@ -34,9 +47,11 @@ const MainPage = () => {
         <input
           className="searchbar"
           placeholder="Search by hotel name, place etc."
+          value={query}
+          onChange={handleSearch}
         />
         <section className="grid hotel-cards">
-          {hotels.map((hotel) => (
+          {filteredHotels.map((hotel) => (
             <article key={hotel.id} className="hotel-card">
               <div className="image card-image">
                 <p className="chip">{hotel.location}</p>

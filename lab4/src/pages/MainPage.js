@@ -7,6 +7,17 @@ import { Link } from "react-router-dom";
 
 const MainPage = () => {
   const [hotels, setHotels] = useState([]);
+  const [query, setQuery] = useState("");
+
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const filteredHotels = hotels.filter((hotel) => {
+    const searchString =
+      `${hotel.name} ${hotel.location} ${hotel.description}`.toLowerCase();
+    return searchString.includes(query.toLowerCase());
+  });
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -55,9 +66,11 @@ const MainPage = () => {
         <input
           className="searchbar"
           placeholder="Search by hotel name, place etc."
+          value={query}
+          onChange={handleSearch}
         />
         <section className="grid hotel-cards">
-          {hotels.map((hotel) => (
+          {filteredHotels.map((hotel) => (
             <article key={hotel.id} className="hotel-card">
               <div className="image card-image">
                 <p className="chip">{hotel.location}</p>
