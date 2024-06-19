@@ -2,6 +2,7 @@
 
 const inputBox = document.querySelector("#input-box");
 const theList = document.querySelector("#unordered-list");
+const searchBox = document.querySelector("#search-box");
 const deleteDialog = document.querySelector("#delete-dialog");
 const taskContent = document.querySelector("#task-content");
 const confirmDelete = document.querySelector("#confirm-delete");
@@ -26,6 +27,19 @@ const addTask = () => {
     save();
   }
   inputBox.value = "";
+};
+
+const filterTasks = () => {
+  const filter = searchBox.value.toLowerCase();
+  const tasks = theList.getElementsByTagName("li");
+  for (let i = 0; i < tasks.length; i++) {
+    const task = tasks[i].innerText.toLowerCase();
+    if (task.includes(filter)) {
+      tasks[i].style.display = "";
+    } else {
+      tasks[i].style.display = "none";
+    }
+  }
 };
 
 theList.addEventListener("click", (event) => {
@@ -70,6 +84,8 @@ confirmDelete.addEventListener("click", () => {
 cancelDelete.addEventListener("click", () => {
   deleteDialog.close();
 });
+
+searchBox.addEventListener("input", filterTasks);
 
 const save = () => {
   localStorage.setItem("task", theList.innerHTML);
