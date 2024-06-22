@@ -48,6 +48,10 @@ select {
   border-width: thin;
   font-size: 14px;
 }
+#input-box,
+#search-box {
+  margin-right: 10px;
+}
 
 .row {
   display: flex;
