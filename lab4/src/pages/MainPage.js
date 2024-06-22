@@ -4,20 +4,48 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
 import arrow from "../Assets/Arrow.svg";
 import { Link } from "react-router-dom";
+import { getHotelMainImage } from "../utils/getHotelMainImage";
 
 const MainPage = () => {
   const [hotels, setHotels] = useState([]);
   const [query, setQuery] = useState("");
+  const [sortAttribute, setSortAttribute] = useState("");
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
   };
 
-  const filteredHotels = hotels.filter((hotel) => {
-    const searchString =
-      `${hotel.name} ${hotel.location} ${hotel.description}`.toLowerCase();
-    return searchString.includes(query.toLowerCase());
-  });
+  const handleSort = (e) => {
+    setSortAttribute(e.target.value);
+  };
+
+  const extractPrice = (priceString) => {
+    const priceMatch = priceString.match(/(\d+)/);
+    return priceMatch ? parseInt(priceMatch[0], 10) : 0;
+  };
+
+  const filteredHotels = hotels
+    .filter((hotel) => {
+      const searchString =
+        `${hotel.name} ${hotel.location} ${hotel.description}`.toLowerCase();
+      return searchString.includes(query.toLowerCase());
+    })
+    .sort((a, b) => {
+      if (!sortAttribute) return 0;
+      if (sortAttribute === "price") {
+        return extractPrice(a.price) - extractPrice(b.price);
+      }
+      if (sortAttribute === "rating") {
+        return b.rating - a.rating;
+      }
+      if (sortAttribute === "name") {
+        return a.name.localeCompare(b.name);
+      }
+      if (sortAttribute === "location") {
+        return a.location.localeCompare(b.location);
+      }
+      return 0;
+    });
 
   useEffect(() => {
     const fetchHotels = async () => {
@@ -69,10 +97,26 @@ const MainPage = () => {
           value={query}
           onChange={handleSearch}
         />
-        <section className="grid hotel-cards">
+        <select
+          className="sort-dropdown"
+          value={sortAttribute}
+          onChange={handleSort}
+        >
+          <option value="">Sort by</option>
+          <option value="price">Price</option>
+          <option value="rating">Rating</option>
+          <option value="name">Name</option>
+          <option value="location">Location</option>
+        </select>
+        <section className="grid hotel-cards ">
           {filteredHotels.map((hotel) => (
             <article key={hotel.id} className="hotel-card">
-              <div className="image card-image">
+              <div
+                className="image card-image"
+                style={{
+                  backgroundImage: `url(${getHotelMainImage(hotel.id)})`,
+                }}
+              >
                 <p className="chip">{hotel.location}</p>
               </div>
               <p className="text-middle">{hotel.name}</p>

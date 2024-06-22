@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
 import { useLocation } from "react-router-dom";
+import { getHotelMainImage } from "../utils/getHotelMainImage";
 
 const HotelPage = () => {
   const location = useLocation();
@@ -26,11 +27,6 @@ const HotelPage = () => {
   if (!hotel) {
     return <p>Hotel not found</p>;
   }
-
-  const getHotelMainImage = (hotelId) => {
-    const imagePath = require(`../Assets/cards${hotelId}.jpg`);
-    return imagePath;
-  };
 
   const openDialog = () => {
     const dialog = document.getElementById("dialog");
