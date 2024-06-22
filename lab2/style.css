@@ -35,6 +35,10 @@ body {
   border-radius: 30px;
   box-shadow: 0 1rem 3rem 1rem rgba(0, 23, 71, 0.15);
 }
+#undo-button {
+  display: block;
+  margin: 20px auto;
+}
 .to-do h2 {
   margin-bottom: 25px;
 }
@@ -66,6 +70,7 @@ button {
   border-radius: 30px;
   color: white;
 }
+
 ul {
   padding: 40px 20px;
   font-size: 16px;
