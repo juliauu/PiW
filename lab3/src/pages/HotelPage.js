@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import hotels from "../data/hotels";
+import { getHotelMainImage } from "../utils/getHotelMainImage";
 
 const HotelPage = () => {
   const { id } = useParams();
@@ -9,11 +10,6 @@ const HotelPage = () => {
   if (!hotel) {
     return <p>Hotel not found</p>;
   }
-
-  const getHotelMainImage = (hotelId) => {
-    const imagePath = require(`../Assets/cards${hotelId}.jpg`);
-    return imagePath;
-  };
 
   const openDialog = () => {
     const dialog = document.getElementById("dialog");

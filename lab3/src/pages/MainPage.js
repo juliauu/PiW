@@ -3,6 +3,7 @@ import hotels from "../data/hotels";
 import arrow from "../Assets/Arrow.svg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { getHotelMainImage } from "../utils/getHotelMainImage";
 
 const MainPage = () => {
   const [query, setQuery] = useState("");
@@ -53,7 +54,12 @@ const MainPage = () => {
         <section className="grid hotel-cards">
           {filteredHotels.map((hotel) => (
             <article key={hotel.id} className="hotel-card">
-              <div className="image card-image">
+              <div
+                className="image card-image"
+                style={{
+                  backgroundImage: `url(${getHotelMainImage(hotel.id)})`,
+                }}
+              >
                 <p className="chip">{hotel.location}</p>
               </div>
               <p className="text-middle">{hotel.name}</p>
