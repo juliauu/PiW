@@ -9,6 +9,9 @@ const confirmDelete = document.querySelector("#confirm-delete");
 const cancelDelete = document.querySelector("#cancel-delete");
 const undoButton = document.querySelector("#undo-button");
 const listSelect = document.querySelector("#list-select");
+const caseInsensitiveCheckbox = document.querySelector(
+  "#case-insensitive-checkbox"
+);
 
 const date = new Date();
 const day = date.getDate();
@@ -52,18 +55,19 @@ const restoreTask = () => {
 };
 
 const filterTasks = () => {
-  const filter = searchBox.value.toLowerCase();
-  const tasks = document.querySelectorAll("li");
+  const filter = searchBox.value.trim();
+  const caseInsensitive = caseInsensitiveCheckbox.checked;
+  const tasks = document.querySelectorAll(".task-ul li");
+
   tasks.forEach((task) => {
-    const taskText = task.innerText.toLowerCase();
-    if (filter === "") {
+    const taskText = task.innerText.trim();
+    const taskToCompare = caseInsensitive ? taskText.toLowerCase() : taskText;
+    const filterToCompare = caseInsensitive ? filter.toLowerCase() : filter;
+
+    if (filter === "" || taskToCompare.includes(filterToCompare)) {
       task.style.display = "";
     } else {
-      if (taskText.includes(filter)) {
-        task.style.display = "";
-      } else {
-        task.style.display = "none";
-      }
+      task.style.display = "none";
     }
   });
 };
@@ -138,6 +142,7 @@ undoButton.addEventListener("click", () => {
 });
 
 searchBox.addEventListener("input", filterTasks);
+caseInsensitiveCheckbox.addEventListener("change", filterTasks);
 
 const save = () => {
   const lists = document.querySelectorAll(".task-ul");
