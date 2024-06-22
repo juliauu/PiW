@@ -8,12 +8,13 @@ const taskContent = document.querySelector("#task-content");
 const confirmDelete = document.querySelector("#confirm-delete");
 const cancelDelete = document.querySelector("#cancel-delete");
 const undoButton = document.querySelector("#undo-button");
+const listSelect = document.querySelector("#list-select");
 
 const date = new Date();
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
-let currentDate = `${day}.${month}.${year}`;
+const day = date.getDate();
+const month = date.getMonth() + 1;
+const year = date.getFullYear();
+const currentDate = `${day}.${month}.${year}`;
 
 let taskToDelete;
 let deletedTasks = [];
@@ -30,7 +31,8 @@ const createListItem = (text) => {
 const addTask = () => {
   if (inputBox.value !== "") {
     const listItem = createListItem(inputBox.value);
-    theList.append(listItem);
+    const selectedList = document.querySelector(`#${listSelect.value}-list`);
+    selectedList.append(listItem);
     save();
   }
   inputBox.value = "";
@@ -40,44 +42,55 @@ const restoreTask = () => {
   if (deletedTasks.length > 0) {
     const lastDeletedTask = deletedTasks.pop();
     const listItem = createListItem(lastDeletedTask.content.trim());
-    theList.append(listItem);
+    const selectedList = document.querySelector(
+      `#${lastDeletedTask.list}-list`
+    );
+    selectedList.append(listItem);
     deletedTasks = [];
     save();
   }
 };
 
 const filterTasks = () => {
-  const filter = searchBox.value.trim().toLowerCase();
-  const tasks = theList.getElementsByTagName("li");
-
-  for (let i = 0; i < tasks.length; i++) {
-    const task = tasks[i].innerText.toLowerCase();
-
+  const filter = searchBox.value.toLowerCase();
+  const tasks = document.querySelectorAll("li");
+  tasks.forEach((task) => {
+    const taskText = task.innerText.toLowerCase();
     if (filter === "") {
-      tasks[i].style.display = "";
+      task.style.display = "";
     } else {
-      if (task.includes(filter)) {
-        tasks[i].style.display = "";
+      if (taskText.includes(filter)) {
+        task.style.display = "";
       } else {
-        tasks[i].style.display = "none";
+        task.style.display = "none";
       }
     }
-  }
+  });
 };
 
-const moveToTrash = (task) => {
+const moveToTrash = (task, listId) => {
   const dateElement = task.querySelector(".date-completed");
   const deletedTask = {
     content: dateElement
       ? task.innerText.slice(0, -dateElement.innerText.length - 2)
       : task.innerText.slice(0, -1),
+    list: listId,
   };
   deletedTasks.push(deletedTask);
   task.remove();
   save();
 };
 
-theList.addEventListener("click", (event) => {
+const toggleList = (listId) => {
+  const list = document.getElementById(listId);
+  if (list.style.display === "none") {
+    list.style.display = "block";
+  } else {
+    list.style.display = "none";
+  }
+};
+
+document.addEventListener("click", (event) => {
   const target = event.target;
   if (target.tagName === "LI") {
     target.classList.toggle("checked");
@@ -110,9 +123,9 @@ theList.addEventListener("click", (event) => {
 
 confirmDelete.addEventListener("click", () => {
   if (taskToDelete) {
-    moveToTrash(taskToDelete);
+    const listId = taskToDelete.parentElement.id.replace("-list", "");
+    moveToTrash(taskToDelete, listId);
     deleteDialog.close();
-    console.log(deletedTasks);
   }
 });
 
@@ -127,15 +140,21 @@ undoButton.addEventListener("click", () => {
 searchBox.addEventListener("input", filterTasks);
 
 const save = () => {
-  localStorage.setItem("task", theList.innerHTML);
+  const lists = document.querySelectorAll(".task-ul");
+  lists.forEach((list) => {
+    localStorage.setItem(list.id, list.innerHTML);
+  });
   localStorage.setItem("deletedTasks", JSON.stringify(deletedTasks));
 };
 
 const showTasks = () => {
-  const storedTasks = localStorage.getItem("task");
-  if (storedTasks) {
-    theList.innerHTML = storedTasks;
-  }
+  const lists = document.querySelectorAll(".task-ul");
+  lists.forEach((list) => {
+    const storedTasks = localStorage.getItem(list.id);
+    if (storedTasks) {
+      list.innerHTML = storedTasks;
+    }
+  });
 };
 
 showTasks();

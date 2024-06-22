@@ -18,12 +18,30 @@
         <h2>To Do List</h2>
         <div class="row">
           <input type="text" id="input-box" placeholder="Add a new task..." />
+          <select id="list-select">
+            <option value="important">Important</option>
+            <option value="less-important">Less Important</option>
+            <option value="optional">Optional</option>
+          </select>
           <button onclick="addTask()">ADD</button>
         </div>
         <div class="row">
           <input type="text" id="search-box" placeholder="Search tasks..." />
         </div>
-        <ul id="unordered-list"></ul>
+
+        <div class="task-list">
+          <h3 onclick="toggleList('important-list')">Important</h3>
+          <ul id="important-list" class="task-ul"></ul>
+        </div>
+        <div class="task-list">
+          <h3 onclick="toggleList('less-important-list')">Less Important</h3>
+          <ul id="less-important-list" class="task-ul"></ul>
+        </div>
+        <div class="task-list">
+          <h3 onclick="toggleList('optional-list')">Optional</h3>
+          <ul id="optional-list" class="task-ul"></ul>
+        </div>
+
         <div>
           <button id="undo-button">Undo Delete</button>
         </div>
