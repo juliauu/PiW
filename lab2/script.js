@@ -59,16 +59,20 @@ const filterTasks = () => {
   const caseInsensitive = caseInsensitiveCheckbox.checked;
   const tasks = document.querySelectorAll(".task-ul li");
 
+  if (filter === "") {
+    tasks.forEach((task) => {
+      task.style.display = "";
+    });
+    return;
+  }
+
   tasks.forEach((task) => {
     const taskText = task.innerText.trim();
     const taskToCompare = caseInsensitive ? taskText.toLowerCase() : taskText;
     const filterToCompare = caseInsensitive ? filter.toLowerCase() : filter;
 
-    if (filter === "" || taskToCompare.includes(filterToCompare)) {
-      task.style.display = "";
-    } else {
-      task.style.display = "none";
-    }
+    if (taskToCompare.includes(filterToCompare)) task.style.display = "";
+    else task.style.display = "none";
   });
 };
 
